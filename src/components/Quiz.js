@@ -1,24 +1,11 @@
-import { useReducer } from "react";
+import { useContext } from "react";
 import Question from "./Question";
-
-// writing the business logic outside the component
-const initialState = {
-  currentQuestionIndex: 0,
-  questions: [],
-};
-
-// A reducer is a function where we define how our actions must change out state (View -> Actions -> State -> View -> Actions...)
-const reducer = (state, action) => {
-  if (action.type === "NEXT_QUESTION") {
-    return { ...state, currentQuestionIndex: state.currentQuestionIndex + 1 };
-  }
-  return state;
-};
+import { QuizContext } from "../contexts/quiz";
 
 const Quiz = () => {
   // dispatch is how we trigger our actions
-  const [state, dispatch] = useReducer(reducer, initialState);
-  console.log("rendered!", state);
+  const [quizState, dispatch] = useContext(QuizContext);
+  console.log("q state", quizState);
 
   return (
     <div className="quiz">
