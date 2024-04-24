@@ -9,3 +9,5 @@ root.render(
     <Quiz />
   </React.StrictMode>
 );
+
+// When strict mode is on, in development, it will render twice, so if there is an error message etc., we may see it appear twice
