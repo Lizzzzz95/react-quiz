@@ -1,10 +1,15 @@
+import { useContext } from "react";
 import Answer from "./Answer";
+import { QuizContext } from "../contexts/quiz";
 
-const Question = ({questions}) => {
-  console.log('q\'s', questions)
+const Question = ({ questions }) => {
+  const [quizState] = useContext(QuizContext);
+  const currentQuestion = quizState.questions[quizState.currentQuestionIndex];
   return (
     <div>
-      <div className="question">Text of our question</div>
+      <div className="question">
+        {currentQuestion.question}
+      </div>
       <div className="answers">
         <Answer />
         <Answer />
@@ -12,7 +17,7 @@ const Question = ({questions}) => {
         <Answer />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Question;
