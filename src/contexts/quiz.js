@@ -6,31 +6,46 @@ const initialState = {
   currentQuestionIndex: 0,
   questions,
   showResults: false,
-  answers: shuffleAnswers(questions[0]) // Answers for the current question, initial answers are obv for question 1, like the currentQuestionIndex property
+  answers: shuffleAnswers(questions[0]), // Answers for the current question, initial answers are obv for question 1, like the currentQuestionIndex property
+  currentAnswer: "",
 };
 
 // A reducer is a function where we define how our actions must change out state (View -> Actions -> State -> View -> Actions...)
 const reducer = (state, action) => {
-  if (action.type === "NEXT_QUESTION") {
-    const showResults =
-      state.currentQuestionIndex === state.questions.length - 1;
-    const currentQuestionIndex = showResults
-      ? state.currentQuestionIndex
-      : state.currentQuestionIndex + 1;
-    const answers = showResults ? [] :  shuffleAnswers(state.questions[currentQuestionIndex]);
-    // We have to return a new object here for it to re-render, can't just return an altered existing object, react won't recognise this
-    return {
-      ...state,
-      currentQuestionIndex,
-      showResults,
-      answers
-    };
-  }
+  console.log(state, action);
 
-  if (action.type === "RESTART") {
-    return initialState;
+  switch (action.type) {
+    case "SELECT_ANSWER": {
+      return {
+        ...state,
+        currentAnswer: action.payload,
+      };
+    }
+    case "NEXT_QUESTION": {
+      const showResults =
+        state.currentQuestionIndex === state.questions.length - 1;
+      const currentQuestionIndex = showResults
+        ? state.currentQuestionIndex
+        : state.currentQuestionIndex + 1;
+      const answers = showResults
+        ? []
+        : shuffleAnswers(state.questions[currentQuestionIndex]);
+      // We have to return a new object here for it to re-render, can't just return an altered existing object, react won't recognise this
+      return {
+        ...state,
+        currentQuestionIndex,
+        showResults,
+        answers,
+        currentAnswer: ''
+      };
+    }
+    case "RESTART": {
+      return initialState;
+    }
+    default: {
+      return state;
+    }
   }
-  return state;
 };
 
 export const QuizContext = createContext();

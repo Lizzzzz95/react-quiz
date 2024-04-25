@@ -6,14 +6,23 @@ import { QuizContext } from "../contexts/quiz";
 // We are using the 'key' prop as it is standard for React to be able to render the component properly, gives an error in  console if we don't have it. Ideally we should use a unique id instead of just a number iteration
 
 const Question = () => {
-  const [quizState] = useContext(QuizContext);
+  const [quizState, dispatch] = useContext(QuizContext);
   const currentQuestion = quizState.questions[quizState.currentQuestionIndex];
   return (
     <div>
       <div className="question">{currentQuestion.question}</div>
       <div className="answers">
         {quizState.answers.map((answer, index) => (
-          <Answer answerText={answer} key={index}/>
+          <Answer
+            answerText={answer}
+            key={index}
+            index={index}
+            currentAnswer={quizState.currentAnswer}
+            correctAnswer={currentQuestion.correctAnswer}
+            onSelectAnswer={(answerTextVar) =>
+              dispatch({ type: "SELECT_ANSWER", payload: answerTextVar })
+            }
+          />
         ))}
       </div>
     </div>
