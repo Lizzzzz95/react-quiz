@@ -5,6 +5,7 @@ import { QuizContext } from "../contexts/quiz";
 const Quiz = () => {
   // dispatch is how we trigger our actions
   const [quizState, dispatch] = useContext(QuizContext);
+  console.log('q state', quizState);
 
   // We wrap the if statement in {}, the && symbol basically means render the html after it if the 'if' statement is true
   return (

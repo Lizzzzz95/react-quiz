@@ -1,10 +1,12 @@
 import { createContext, useReducer } from "react";
 import questions from "../data";
+import { shuffleAnswers } from "../helpers";
 
 const initialState = {
   currentQuestionIndex: 0,
   questions,
   showResults: false,
+  answers: shuffleAnswers(questions[0]) // Answers for the current question, initial answers are obv for question 1, like the currentQuestionIndex property
 };
 
 // A reducer is a function where we define how our actions must change out state (View -> Actions -> State -> View -> Actions...)
@@ -15,11 +17,13 @@ const reducer = (state, action) => {
     const currentQuestionIndex = showResults
       ? state.currentQuestionIndex
       : state.currentQuestionIndex + 1;
+    const answers = showResults ? [] :  shuffleAnswers(state.questions[currentQuestionIndex]);
     // We have to return a new object here for it to re-render, can't just return an altered existing object, react won't recognise this
     return {
       ...state,
       currentQuestionIndex,
       showResults,
+      answers
     };
   }
 
