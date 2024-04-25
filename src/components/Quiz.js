@@ -6,26 +6,44 @@ const Quiz = () => {
   // dispatch is how we trigger our actions
   const [quizState, dispatch] = useContext(QuizContext);
 
+  // We wrap the if statement in {}, the && symbol basically means render the html after it if the 'if' statement is true
   return (
     <div className="quiz">
-      <div>
-        <div className="score">
-          Question {quizState.currentQuestionIndex + 1}/
-          {quizState.questions.length}
+      {quizState.showResults && (
+        <div className="results">
+          <div className="congratulations">Congratulations</div>
+          <div className="results-info">
+            <div>You have completed the quiz</div>
+            <div>You've got 4 of {quizState.questions.length}</div>
+          </div>
+          <div
+            className="next-button"
+            onClick={() => dispatch({ type: "RESTART" })}
+          >
+            Restart
+          </div>
         </div>
-        <Question />
-        <div
-          className="next-button"
-          // All we are doing here is dispatching an action and the business logic outside the component will handle it, better than using useState (using an anonymouse function)
-          onClick={() =>
-            dispatch({
-              type: "NEXT_QUESTION",
-            })
-          }
-        >
-          Next Question
+      )}
+      {!quizState.showResults && (
+        <div>
+          <div className="score">
+            Question {quizState.currentQuestionIndex + 1}/
+            {quizState.questions.length}
+          </div>
+          <Question />
+          <div
+            className="next-button"
+            // All we are doing here is dispatching an action and the business logic outside the component will handle it, better than using useState (using an anonymouse function)
+            onClick={() =>
+              dispatch({
+                type: "NEXT_QUESTION",
+              })
+            }
+          >
+            Next Question
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -4,13 +4,27 @@ import questions from "../data";
 const initialState = {
   currentQuestionIndex: 0,
   questions,
+  showResults: false,
 };
 
 // A reducer is a function where we define how our actions must change out state (View -> Actions -> State -> View -> Actions...)
 const reducer = (state, action) => {
   if (action.type === "NEXT_QUESTION") {
+    const showResults =
+      state.currentQuestionIndex === state.questions.length - 1;
+    const currentQuestionIndex = showResults
+      ? state.currentQuestionIndex
+      : state.currentQuestionIndex + 1;
     // We have to return a new object here for it to re-render, can't just return an altered existing object, react won't recognise this
-    return { ...state, currentQuestionIndex: state.currentQuestionIndex + 1 };
+    return {
+      ...state,
+      currentQuestionIndex,
+      showResults,
+    };
+  }
+
+  if (action.type === "RESTART") {
+    return initialState;
   }
   return state;
 };
