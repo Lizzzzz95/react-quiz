@@ -8,17 +8,22 @@ const initialState = {
   showResults: false,
   answers: shuffleAnswers(questions[0]), // Answers for the current question, initial answers are obv for question 1, like the currentQuestionIndex property
   currentAnswer: "",
+  correctAnswersCount: 0,
 };
 
 // A reducer is a function where we define how our actions must change out state (View -> Actions -> State -> View -> Actions...)
 const reducer = (state, action) => {
-  console.log(state, action);
-
   switch (action.type) {
     case "SELECT_ANSWER": {
+      const correctAnswersCount =
+        action.payload ===
+        state.questions[state.currentQuestionIndex].correctAnswer
+          ? state.correctAnswersCount + 1
+          : state.correctAnswersCount;
       return {
         ...state,
         currentAnswer: action.payload,
+        correctAnswersCount,
       };
     }
     case "NEXT_QUESTION": {
@@ -36,7 +41,7 @@ const reducer = (state, action) => {
         currentQuestionIndex,
         showResults,
         answers,
-        currentAnswer: ''
+        currentAnswer: "",
       };
     }
     case "RESTART": {
