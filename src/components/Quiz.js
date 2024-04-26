@@ -1,14 +1,46 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Question from "./Question";
 import { QuizContext } from "../contexts/quiz";
 
 const Quiz = () => {
   // dispatch is how we trigger our actions
   const [quizState, dispatch] = useContext(QuizContext);
+  const apiUrl =
+    "https://opentdb.com/api.php?amount=10&category=31&difficulty=easy&type=multiple&encode=url3986";
 
+  // By default, useEffect is triggered after every render of our code. But if provide an empty array in the 2nd param, it will be triggered only once, because we don't have any dependencies
+  useEffect(() => {
+    if (quizState.questions.length > 0 || quizState.error) {
+      return;
+    }
+    fetch(apiUrl)
+      .then((res) => {
+        if(!res.ok) {
+          dispatch({ type: "SERVER_ERROR", payload: res.status + ' Error' })
+          return;
+        }
+        return res.json()
+      })
+      .then((data) => {
+        if (data) {
+          dispatch({ type: "LOADED_QUESTIONS", payload: data.results });
+        }
+      })
+      .catch((err) => {
+        dispatch({ type: "SERVER_ERROR", payload: err.message });
+      });
+  });
   // We wrap the if statement in {}, the && symbol basically means render the html after it if the 'if' statement is true
   return (
     <div className="quiz">
+      {quizState.error && (
+        <div className="results">
+          <div className="congratulations">Server error</div>
+          <div className="results-info">
+            <div>{quizState.error}</div>
+          </div>
+        </div>
+      )}
       {quizState.showResults && (
         <div className="results">
           <div className="congratulations">Congratulations</div>
@@ -27,7 +59,7 @@ const Quiz = () => {
           </div>
         </div>
       )}
-      {!quizState.showResults && (
+      {!quizState.showResults && quizState.questions.length > 0 && (
         <div>
           <div className="score">
             Question {quizState.currentQuestionIndex + 1}/

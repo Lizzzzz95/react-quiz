@@ -1,14 +1,14 @@
 import { createContext, useReducer } from "react";
-import questions from "../data";
-import { shuffleAnswers } from "../helpers";
+import { normaliseQuestions, shuffleAnswers } from "../helpers";
 
 const initialState = {
   currentQuestionIndex: 0,
-  questions,
+  questions: [],
   showResults: false,
-  answers: shuffleAnswers(questions[0]), // Answers for the current question, initial answers are obv for question 1, like the currentQuestionIndex property
+  answers: [], // Answers for the current question, initial answers are obv for question 1, like the currentQuestionIndex property
   currentAnswer: "",
   correctAnswersCount: 0,
+  error: null,
 };
 
 // A reducer is a function where we define how our actions must change out state (View -> Actions -> State -> View -> Actions...)
@@ -46,6 +46,20 @@ const reducer = (state, action) => {
     }
     case "RESTART": {
       return initialState;
+    }
+    case "LOADED_QUESTIONS": {
+      const normalisedQuestions = normaliseQuestions(action.payload);
+      return {
+        ...state,
+        questions: normalisedQuestions,
+        answers: shuffleAnswers(normalisedQuestions[0]),
+      };
+    }
+    case "SERVER_ERROR": {
+      return {
+        ...state,
+        error: action.payload
+      }
     }
     default: {
       return state;

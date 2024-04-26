@@ -15,3 +15,16 @@ export const shuffleAnswers = (question) => {
     .sort((a, b) => a.sort - b.sort)
     .map((a) => a.value);
 };
+
+export const normaliseQuestions = (apiQuestions) => {
+  return apiQuestions.map((apiQuestions) => {
+    const incorrectAnswers = apiQuestions.incorrect_answers.map(
+      (incorrectAnswer) => decodeURIComponent(incorrectAnswer)
+    );
+    return {
+      correctAnswer: decodeURIComponent(apiQuestions.correct_answer),
+      question: decodeURIComponent(apiQuestions.question),
+      incorrectAnswers,
+    };
+  });
+};
