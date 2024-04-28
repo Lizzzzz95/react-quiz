@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { QuizProvider } from "./contexts/quiz";
 
@@ -7,21 +7,20 @@ const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 const Quiz = lazy(() => import("./pages/Quiz"));
 
 const App = () => {
+  useEffect(() => {
+    document.title = "My Quiz App";
+  }, []);
+
   return (
     <>
       <Suspense fallback={<div className="container">Loading...</div>}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route
-            path="/quiz"
-            element={
-              <QuizProvider>
-                <Quiz />
-              </QuizProvider>
-            }
-          />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
+        <QuizProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/quiz" element={<Quiz />} />
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </QuizProvider>
       </Suspense>
     </>
   );

@@ -9,11 +9,21 @@ const initialState = {
   currentAnswer: "",
   correctAnswersCount: 0,
   error: null,
+  apiPayload: {
+    noQs: 5,
+  },
 };
 
 // A reducer is a function where we define how our actions must change out state (View -> Actions -> State -> View -> Actions...)
 const reducer = (state, action) => {
   switch (action.type) {
+    case "LOAD_NEW_QUESTIONS": {
+      const apiPayload = action.payload;
+      return {
+        ...state,
+        apiPayload,
+      };
+    }
     case "SELECT_ANSWER": {
       const correctAnswersCount =
         action.payload ===

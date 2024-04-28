@@ -1,5 +1,6 @@
 body {
   background-color: #e4e4e4;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 div {
@@ -121,4 +122,13 @@ div {
 
 .disabled-answer {
   pointer-events: none;
+}
+
+.container {
+  padding: 5rem;
+}
+
+.home-title {
+  font-size: 30px;
+  font-weight: bold;
 }
