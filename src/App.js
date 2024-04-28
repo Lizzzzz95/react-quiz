@@ -1,25 +1,28 @@
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import ErrorPage from "./pages/ErrorPage";
-import Quiz from "./pages/Quiz";
 import { QuizProvider } from "./contexts/quiz";
+
+const Home = lazy(() => import("./pages/Home"));
+const ErrorPage = lazy(() => import("./pages/ErrorPage"));
+const Quiz = lazy(() => import("./pages/Quiz"));
 
 const App = () => {
   return (
     <>
-      <Routes>
-        {/* <Route index element={<Home />} /> */}
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/quiz"
-          element={
-            <QuizProvider>
-              <Quiz />
-            </QuizProvider>
-          }
-        />
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
+      <Suspense fallback={<div className="container">Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/quiz"
+            element={
+              <QuizProvider>
+                <Quiz />
+              </QuizProvider>
+            }
+          />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </Suspense>
     </>
   );
 };
