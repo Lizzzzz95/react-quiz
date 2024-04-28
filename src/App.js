@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
-import ErrorPage from "./components/ErrorPage";
-import Quiz from "./components/Quiz";
+import Home from "./pages/Home";
+import ErrorPage from "./pages/ErrorPage";
+import Quiz from "./pages/Quiz";
 import { QuizProvider } from "./contexts/quiz";
 
 const App = () => {
