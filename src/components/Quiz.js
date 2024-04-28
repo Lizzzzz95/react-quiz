@@ -1,10 +1,12 @@
 import { useContext, useEffect } from "react";
 import Question from "./Question";
 import { QuizContext } from "../contexts/quiz";
+import { useNavigate } from "react-router-dom";
 
 const Quiz = () => {
   // dispatch is how we trigger our actions
   const [quizState, dispatch] = useContext(QuizContext);
+  const navigate = useNavigate();
   const apiUrl =
     "https://opentdb.com/api.php?amount=10&category=31&difficulty=easy&type=multiple&encode=url3986";
 
@@ -15,11 +17,11 @@ const Quiz = () => {
     }
     fetch(apiUrl)
       .then((res) => {
-        if(!res.ok) {
-          dispatch({ type: "SERVER_ERROR", payload: res.status + ' Error' })
+        if (!res.ok) {
+          dispatch({ type: "SERVER_ERROR", payload: res.status + " Error" });
           return;
         }
-        return res.json()
+        return res.json();
       })
       .then((data) => {
         if (data) {
@@ -79,6 +81,7 @@ const Quiz = () => {
           </div>
         </div>
       )}
+      <button onClick={() => navigate(-1)}>Go back</button>
     </div>
   );
 };
