@@ -58,8 +58,8 @@ const reducer = (state, action) => {
     case "SERVER_ERROR": {
       return {
         ...state,
-        error: action.payload
-      }
+        error: action.payload,
+      };
     }
     default: {
       return state;

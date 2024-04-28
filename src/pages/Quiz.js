@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import Question from "./Question";
+import Question from "../components/Question";
 import { QuizContext } from "../contexts/quiz";
 import { useNavigate } from "react-router-dom";
 
