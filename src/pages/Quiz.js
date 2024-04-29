@@ -7,10 +7,14 @@ const Quiz = () => {
   // dispatch is how we trigger our actions
   const [quizState, dispatch] = useContext(QuizContext);
   const navigate = useNavigate();
-  const apiUrl =
-    "https://opentdb.com/api.php?amount=" +
-    quizState.apiPayload.noQs +
-    "&category=31&difficulty=easy&type=multiple&encode=url3986";
+  const apiUrl = new URL("/api.php", "https://opentdb.com");
+  apiUrl.search = new URLSearchParams({
+    amount: quizState.apiPayload.noQs,
+    difficulty: quizState.apiPayload.difficulty,
+    category: "31",
+    type: "multiple",
+    encode: "url3986"
+  });
 
   // By default, useEffect is triggered after every render of our code. But if provide an empty array in the 2nd param, it will be triggered only once, because we don't have any dependencies
   useEffect(() => {

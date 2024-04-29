@@ -11,6 +11,7 @@ const initialState = {
   error: null,
   apiPayload: {
     noQs: 5,
+    difficulty: "easy"
   },
 };
 

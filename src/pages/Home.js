@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { QuizContext } from "../contexts/quiz";
 
@@ -6,10 +6,29 @@ const Home = () => {
   const [, dispatch] = useContext(QuizContext);
   const navigate = useNavigate();
   const questionOptions = [5, 10, 20, 30, 40, 50];
-  let quizPayload = { noQs: questionOptions[0] };
+  const difficultyOptions = [
+    {
+      label: "Easy",
+      value: "easy",
+    },
+    {
+      label: "Medium",
+      value: "medium",
+    },
+    {
+      label: "Hard",
+      value: "hard",
+    },
+  ];
+
+  const [formData, setFormData] = useState({
+    noQs: questionOptions[0],
+    difficulty: "easy",
+  });
 
   const handleChange = (event) => {
-    quizPayload.noQs = event.target.value;
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
   return (
@@ -20,7 +39,7 @@ const Home = () => {
         <div>
           <label>
             How many questions?
-            <select name="question-numbers" onChange={handleChange}>
+            <select name="noQs" onChange={handleChange} value={formData.noQs}>
               {questionOptions.map((num, index) => (
                 <option key={index} value={num}>
                   {num}
@@ -29,9 +48,25 @@ const Home = () => {
             </select>
           </label>
         </div>
+        <div>
+          <label>
+            Difficulty?
+            <select
+              name="difficulty"
+              onChange={handleChange}
+              value={formData.difficulty}
+            >
+              {difficultyOptions.map((option, index) => (
+                <option key={index} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
         <button
           onClick={() => {
-            dispatch({ type: "LOAD_NEW_QUESTIONS", payload: quizPayload });
+            dispatch({ type: "LOAD_NEW_QUESTIONS", payload: formData });
             navigate("quiz");
           }}
         >
