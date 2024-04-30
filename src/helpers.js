@@ -28,3 +28,12 @@ export const normaliseQuestions = (apiQuestions) => {
     };
   });
 };
+
+export const normaliseQueryParams = (queryParams) => {
+  for (let key in queryParams) {
+    if (queryParams[key] === null || queryParams[key] === "") {
+      delete queryParams[key];
+    }
+  }
+  return new URLSearchParams(queryParams);
+};

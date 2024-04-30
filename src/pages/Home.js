@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { QuizContext } from "../contexts/quiz";
 
@@ -7,6 +7,10 @@ const Home = () => {
   const navigate = useNavigate();
   const questionOptions = [5, 10, 20, 30, 40, 50];
   const difficultyOptions = [
+    {
+      label: "Any",
+      value: null,
+    },
     {
       label: "Easy",
       value: "easy",
@@ -21,15 +25,27 @@ const Home = () => {
     },
   ];
 
+  const [categories, setCategories] = useState([]);
+
   const [formData, setFormData] = useState({
     noQs: questionOptions[0],
-    difficulty: "easy",
+    difficulty: null,
+    category: null,
   });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
+
+  useEffect(() => {
+    fetch("https://opentdb.com/api_category.php")
+      .then((res) => res.json())
+      .then((data) => {
+        data.trivia_categories.unshift({ id: null, name: "Any" });
+        setCategories(data.trivia_categories);
+      });
+  }, []);
 
   return (
     <div>
@@ -43,6 +59,22 @@ const Home = () => {
               {questionOptions.map((num, index) => (
                 <option key={index} value={num}>
                   {num}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div>
+          <label>
+            Which category?
+            <select
+              name="category"
+              onChange={handleChange}
+              value={formData.category}
+            >
+              {categories.map((category, index) => (
+                <option key={index} value={category.id}>
+                  {category.name}
                 </option>
               ))}
             </select>

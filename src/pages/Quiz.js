@@ -2,16 +2,17 @@ import { useContext, useEffect } from "react";
 import Question from "../components/Question";
 import { QuizContext } from "../contexts/quiz";
 import { useNavigate } from "react-router-dom";
+import { normaliseQueryParams } from "../helpers";
 
 const Quiz = () => {
   // dispatch is how we trigger our actions
   const [quizState, dispatch] = useContext(QuizContext);
   const navigate = useNavigate();
   const apiUrl = new URL("/api.php", "https://opentdb.com");
-  apiUrl.search = new URLSearchParams({
+  apiUrl.search = normaliseQueryParams({
     amount: quizState.apiPayload.noQs,
     difficulty: quizState.apiPayload.difficulty,
-    category: "31",
+    category: quizState.apiPayload.category,
     type: "multiple",
     encode: "url3986"
   });
