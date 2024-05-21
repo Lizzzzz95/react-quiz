@@ -63,6 +63,14 @@ const Quiz = () => {
           <div
             className="next-button"
             onClick={() => {
+              dispatch({ type: "TRY_AGAIN", payload: quizState.apiPayload });
+            }}
+          >
+            Try Again?
+          </div>
+          <div
+            className="next-button"
+            onClick={() => {
               dispatch({ type: "RESTART" });
               navigate("/");
             }}

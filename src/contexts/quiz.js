@@ -26,6 +26,11 @@ const reducer = (state, action) => {
         apiPayload,
       };
     }
+    case "TRY_AGAIN": {
+      const returnState = initialState;
+      returnState.apiPayload = action.payload;
+      return returnState;
+    }
     case "SELECT_ANSWER": {
       const correctAnswersCount =
         action.payload ===
