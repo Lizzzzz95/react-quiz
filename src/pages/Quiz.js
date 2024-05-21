@@ -14,7 +14,7 @@ const Quiz = () => {
     difficulty: quizState.apiPayload.difficulty,
     category: quizState.apiPayload.category,
     type: "multiple",
-    encode: "url3986"
+    encode: "url3986",
   });
 
   // By default, useEffect is triggered after every render of our code. But if provide an empty array in the 2nd param, it will be triggered only once, because we don't have any dependencies
@@ -62,9 +62,12 @@ const Quiz = () => {
           </div>
           <div
             className="next-button"
-            onClick={() => dispatch({ type: "RESTART" })}
+            onClick={() => {
+              dispatch({ type: "RESTART" });
+              navigate("/");
+            }}
           >
-            Restart
+            New Quiz?
           </div>
         </div>
       )}

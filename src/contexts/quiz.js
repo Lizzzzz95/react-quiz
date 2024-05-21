@@ -12,7 +12,7 @@ const initialState = {
   apiPayload: {
     noQs: 5,
     difficulty: null,
-    category: null
+    category: null,
   },
 };
 

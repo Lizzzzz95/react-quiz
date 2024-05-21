@@ -10,7 +10,7 @@ const Home = () => {
   const difficultyOptions = [
     {
       label: "Any",
-      value: null,
+      value: "",
     },
     {
       label: "Easy",
@@ -32,7 +32,7 @@ const Home = () => {
     fetch("https://opentdb.com/api_category.php")
       .then((res) => res.json())
       .then((data) => {
-        data.trivia_categories.unshift({ id: null, name: "Any" });
+        data.trivia_categories.unshift({ id: "", name: "Any" });
         setCategories(data.trivia_categories);
       });
   }, []);
@@ -48,16 +48,20 @@ const Home = () => {
     navigate("quiz");
   };
 
+  const onErrors = (formErrors) => {
+    console.log("errors: ", formErrors);
+  };
+
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit, onErrors)}>
         <div className="container">
           <div className="home-title">Quiz!</div>
           <div className="home-title">Please select options...</div>
           <div>
             <label>
               How many questions?
-              <select name="noQs" {...register("noQs", { required: true })}>
+              <select name="noQs" {...register("noQs")}>
                 {questionOptions.map((num, index) => (
                   <option key={index} value={num}>
                     {num}
@@ -69,10 +73,7 @@ const Home = () => {
           <div>
             <label>
               Which category?
-              <select
-                name="category"
-                {...register("category", { required: true })}
-              >
+              <select name="category" {...register("category")}>
                 {categories.map((category, index) => (
                   <option key={index} value={category.id}>
                     {category.name}
@@ -84,10 +85,7 @@ const Home = () => {
           <div>
             <label>
               Difficulty?
-              <select
-                name="difficulty"
-                {...register("difficulty", { required: true })}
-              >
+              <select name="difficulty" {...register("difficulty")}>
                 {difficultyOptions.map((option, index) => (
                   <option key={index} value={option.value}>
                     {option.label}
